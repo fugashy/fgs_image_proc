@@ -1,6 +1,6 @@
 #include "fgs_image_proc_utils/viewer.hpp"
 
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/highgui.hpp>
 
 namespace fgs {
 namespace image_proc_utils {

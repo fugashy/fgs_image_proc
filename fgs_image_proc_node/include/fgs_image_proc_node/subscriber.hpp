@@ -2,31 +2,18 @@
 #define FGS_IMAGE_PROC_NODE_SUBSCRIBER_HPP_
 #include <ros/ros.h>
 #include <sensor_msgs/Image.h>
-#include <sensor_msgs/image_encodings.h>
-#include <cv_bridge/cv_bridge.h>
 #include <boost/thread.hpp>
 
-#include "fgs_image_proc_utils/retriever.hpp"
-
-namespace {
-const char* const kTopicName = "topic_name";
-const char* const kQueueLength = "queue_length";
-}
+#include "fgs_image_proc_utils/i_image_retriever.hpp"
 
 namespace fgs {
 namespace image_proc_node {
 
-class Subscriber : public image_proc_utils::Retriever {
+class Subscriber : public fgs::image_proc_utils::Retriever {
  public:
-  Subscriber(int queue_length);
+  explicit Subscriber(int queue_length);
 
-  virtual cv::Mat GetImage() {
-    boost::lock_guard<boost::mutex> lock(mutex_);
-      cv::Mat out = image_.clone();
-      image_ = cv::Mat()
-      return out;
-    }
-  }
+  virtual cv::Mat GetImage();
 
  private:
   void Callback(const sensor_msgs::ImageConstPtr& msg);

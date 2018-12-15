@@ -1,5 +1,8 @@
 #include "fgs_image_proc_node/subscriber.hpp"
 
+#include <sensor_msgs/image_encodings.h>
+#include <cv_bridge/cv_bridge.h>
+
 namespace fgs {
 namespace image_proc_node {
 
@@ -24,7 +27,7 @@ void Subscriber::Callback(const sensor_msgs::ImageConstPtr& msg) {
 cv::Mat Subscriber::GetImage() {
   boost::lock_guard<boost::mutex> lock(mutex_);
   cv::Mat out = image_.clone();
-  image_ = cv::Mat()
+  image_ = cv::Mat();
   return out;
 }
 

@@ -13,14 +13,14 @@ int main(int argc, char** argv) {
 
   try {
     sub.reset(new Subscriber(1));
-    viewer.reset(new Viewer("simple_node_image");
+    viewer.reset(new Viewer("simple_node_image"));
 
     ros::Rate rate(5);
     while (private_nh.ok()) {
-      cv::Mat image = subscriber.GetImage();
+      cv::Mat image = sub->GetImage();
 
-      if (image) {
-        viewer.Update(image);
+      if (!image.empty()) {
+        viewer->Update(image);
       }
 
       ros::spinOnce();
