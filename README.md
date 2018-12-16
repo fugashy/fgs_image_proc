@@ -2,6 +2,11 @@
 
 My playground of image processing.
 
+# Main functions
+
+- Provide simple viewer to confirm processed image.
+- Dynamic reconfiguable filters help for learning these filters.
+
 # Dependency
 
 - ros kinetic
@@ -59,7 +64,6 @@ My playground of image processing.
               Neither the names of the copyright holders nor the names of the contributors may be used to endorse or promote products derived from this software without specific prior written permission.
 
               This software is provided by the copyright holders and contributors "as is" and any express or implied warranties, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event shall copyright holders or contributors be liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
-  ```
 
 # How to get start
 
@@ -74,5 +78,12 @@ My playground of image processing.
 
 | name | detail |
 | ---- | ---- |
+| fgs_image_filter | Reconfiguable image filters |
 | fgs_image_proc_node | Provide ros node for data process. |
 | fgs_image_proc_utils | It contains viewer or something. |
+
+# License
+
+All packages in this packages are under MIT software license.
+
+<https://opensource.org/licenses/MIT>
