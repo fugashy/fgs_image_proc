@@ -5,12 +5,13 @@ add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  fgs_image_filter
   fgs_image_proc_utils
 )
 
 catkin_package(
   INCLUDE_DIRS include
-  CATKIN_DEPENDS roscpp fgs_image_proc_utils
+  CATKIN_DEPENDS roscpp fgs_image_filter fgs_image_proc_utils
 )
 
 include_directories(
@@ -28,6 +29,12 @@ target_link_libraries(${PROJECT_NAME}
 add_executable(${PROJECT_NAME}_simple_node
   src/${PROJECT_NAME}/simple_node.cpp)
 target_link_libraries(${PROJECT_NAME}_simple_node
+  ${PROJECT_NAME}
+)
+
+add_executable(${PROJECT_NAME}_filter_node
+  src/${PROJECT_NAME}/filter_node.cpp)
+target_link_libraries(${PROJECT_NAME}_filter_node
   ${PROJECT_NAME}
 )
 

@@ -1,5 +1,3 @@
-#ifndef IMAGE_PROCESS_FILTER_GAUSSIAN_HPP_
-#define IMAGE_PROCESS_FILTER_GAUSSIAN_HPP_
 #include "fgs_image_filter/reconfiguable_filters.hpp"
 
 #include <opencv2/imgproc.hpp>
@@ -8,11 +6,11 @@ namespace fgs {
 namespace image_filter {
 
 Gaussian::Gaussian(ros::NodeHandle& nh) {
-  config_.kernel_x = 10;
-  config_.kernel_y = 10;
-  config_.sigma_x = 1.0;
-  config_.sigma_y = 1.0;
-  config_.border_type = cv::BORDER_DEFAULT;
+  server_.reset(new dynamic_reconfigure::Server<GaussianConfig>(
+        ros::NodeHandle(nh, "gaussian")));
+  dynamic_reconfigure::Server<GaussianConfig>::CallbackType f = boost::bind(
+      &Gaussian::ReconfigureCallback, this, _1, _2);
+  server_->setCallback(f);
 }
 
 void Gaussian::Through(const cv::Mat& input, cv::Mat& output) {
@@ -24,9 +22,13 @@ void Gaussian::Through(const cv::Mat& input, cv::Mat& output) {
 
 void Gaussian::ReconfigureCallback(GaussianConfig& config, uint32_t level) {
   std::lock_guard<std::mutex> lock(mutex_);
+  if (config.kernel_x % 2 != 1 or config.kernel_x < 1 or
+      config.kernel_y % 2 != 1 or config.kernel_y < 1) {
+    ROS_WARN_THROTTLE(2.0, "Kernel size should be > 1 and odd num");
+    return;
+  }
   config_ = config;
 }
 
 }
 }
-#endif

@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 generate_dynamic_reconfigure_options(
   config/Gaussian.cfg
+  config/Bilateral.cfg
 )
 
 catkin_package(
@@ -25,6 +26,8 @@ include_directories(
 
 add_library(${PROJECT_NAME}
   src/${PROJECT_NAME}/gaussian.cpp
+  src/${PROJECT_NAME}/bilateral.cpp
+  src/${PROJECT_NAME}/factory.cpp
 )
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
