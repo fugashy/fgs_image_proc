@@ -26,11 +26,11 @@ void CannyEdge::Through(const cv::Mat& in, cv::Mat& out) {
 void CannyEdge::ReconfigureCallback(CannyEdgeConfig& config, uint32_t level) {
   std::lock_guard<std::mutex> lock(mutex_);
   if (config.val_max == config.val_min) {
-    ROS_WARN_THROTTLE(3.0, "Min value and max value have same value each other.");
+    ROS_WARN("Min value and max value have same value each other.");
     return;
   } else if (config.sobel_aperture < 3 || 7 < config.sobel_aperture ||
              config.sobel_aperture % 2 != 1) {
-    ROS_WARN_THROTTLE(3.0, "Aperture size should be odd between 3 and 7");
+    ROS_WARN("Aperture size should be odd between 3 and 7");
     return;
   }
   config_ = config;

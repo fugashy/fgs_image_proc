@@ -28,7 +28,7 @@ void Gaussian::ReconfigureCallback(GaussianConfig& config, uint32_t level) {
   std::lock_guard<std::mutex> lock(mutex_);
   if (config.kernel_x % 2 != 1 or config.kernel_x < 1 or
       config.kernel_y % 2 != 1 or config.kernel_y < 1) {
-    ROS_WARN_THROTTLE(2.0, "Kernel size should be > 1 and odd num");
+    ROS_WARN("Kernel size should be > 1 and odd num");
     return;
   }
   config_ = config;
