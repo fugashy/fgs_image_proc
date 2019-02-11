@@ -2,6 +2,7 @@
 
 #include <mutex>
 
+#include <dynamic_reconfigure/server.h>
 #include <ros/ros.h>
 
 #include <fgs_image_filter/GaussianConfig.h>
