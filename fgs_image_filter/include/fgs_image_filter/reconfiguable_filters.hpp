@@ -6,9 +6,11 @@
 
 #include <fgs_image_filter/GaussianConfig.h>
 #include <fgs_image_filter/BilateralConfig.h>
+#include <fgs_image_filter/CannyEdgeConfig.h>
 
 using fgs_image_filter::GaussianConfig;
 using fgs_image_filter::BilateralConfig;
+using fgs_image_filter::CannyEdgeConfig;
 
 namespace fgs {
 namespace image_filter {
@@ -36,6 +38,19 @@ class Bilateral : public Interface {
 
   std::shared_ptr<dynamic_reconfigure::Server<BilateralConfig>> server_;
   BilateralConfig config_;
+  std::mutex mutex_;
+};
+
+class CannyEdge : public Interface {
+ public:
+  explicit CannyEdge(ros::NodeHandle& nh);
+  virtual void Through(const cv::Mat& in, cv::Mat& out);
+
+ private:
+  void ReconfigureCallback(CannyEdgeConfig& config, uint32_t level);
+
+  std::shared_ptr<dynamic_reconfigure::Server<CannyEdgeConfig>> server_;
+  CannyEdgeConfig config_;
   std::mutex mutex_;
 };
 

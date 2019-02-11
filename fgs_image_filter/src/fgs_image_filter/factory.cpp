@@ -17,6 +17,8 @@ Interface::Ptr Factory::Create(ros::NodeHandle& nh) {
     ptr.reset(new Gaussian(nh));
   } else if (type == "bilateral") {
     ptr.reset(new Bilateral(nh));
+  } else if (type == "canny_edge") {
+    ptr.reset(new CannyEdge(nh));
   } else {
     throw std::runtime_error("Invalid filter type.");
   }
