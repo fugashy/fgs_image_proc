@@ -16,8 +16,12 @@ Gaussian::Gaussian(ros::NodeHandle& nh) {
 void Gaussian::Through(const cv::Mat& input, cv::Mat& output) {
   std::lock_guard<std::mutex> lock(mutex_);
   const cv::Size kernel(config_.kernel_x, config_.kernel_y);
-  cv::GaussianBlur(
-      input, output, kernel, config_.sigma_x, config_.sigma_y, config_.border_type);
+  cv::Mat tmp = input;
+  for (int i = 0, iend = config_.iteration_count; i < iend; ++i) {
+    cv::GaussianBlur(
+        tmp, output, kernel, config_.sigma_x, config_.sigma_y, config_.border_type);
+    tmp = output.clone();
+  }
 }
 
 void Gaussian::ReconfigureCallback(GaussianConfig& config, uint32_t level) {

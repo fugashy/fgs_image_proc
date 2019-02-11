@@ -10,7 +10,7 @@ namespace image_filter {
 
 Interface::Ptr Factory::Create(ros::NodeHandle& nh) {
   std::string type;
-  nh.param<std::string>("filter/type", type, "gaussian");
+  nh.param<std::string>("type", type, "gaussian");
 
   Interface::Ptr ptr;
   if (type == "gaussian") {
