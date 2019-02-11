@@ -6,6 +6,8 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   fgs_image_proc_utils
   dynamic_reconfigure
+  message_generation
+  std_msgs
 )
 
 generate_dynamic_reconfigure_options(
@@ -14,10 +16,13 @@ generate_dynamic_reconfigure_options(
   config/CannyEdge.cfg
 )
 
+add_service_files(DIRECTORY srv FILES FilterType.srv)
+generate_messages(DEPENDENCIES std_msgs)
+
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS fgs_image_proc_utils dynamic_reconfigure
+  CATKIN_DEPENDS fgs_image_proc_utils dynamic_reconfigure message_runtime std_msgs
 )
 
 include_directories(
@@ -30,10 +35,14 @@ add_library(${PROJECT_NAME}
   src/${PROJECT_NAME}/bilateral.cpp
   src/${PROJECT_NAME}/canny_edge.cpp
   src/${PROJECT_NAME}/factory.cpp
+  src/${PROJECT_NAME}/dynamic_changable_filter.cpp
 )
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
+add_dependencies(${PROJECT_NAME}
+  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+  ${catkin_EXPORTED_TARGETS})
 
 install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

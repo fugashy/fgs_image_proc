@@ -2,8 +2,8 @@
 #define FGS_IMAGE_FILTER_I_FILTER_HPP_
 #include <memory>
 
-#include <dynamic_reconfigure/server.h>
 #include <opencv2/core/core.hpp>
+#include <ros/ros.h>
 
 namespace fgs {
 namespace image_filter {

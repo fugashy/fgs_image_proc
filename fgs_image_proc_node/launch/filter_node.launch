@@ -1,11 +1,9 @@
 <launch>
   <arg name="topic_name" default="image_raw"/>
-  <arg name="type" default="gaussian"/>
 
   <node pkg="fgs_image_proc_node"
     type="fgs_image_proc_node_filter_node"
     name="filter_node">
-    <param name="type" value="$(arg type)"/>
     <remap from="image_raw" to="$(arg topic_name)"/>
   </node>
 </launch>
