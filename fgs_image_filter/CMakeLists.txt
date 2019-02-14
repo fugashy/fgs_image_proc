@@ -17,6 +17,7 @@ generate_dynamic_reconfigure_options(
   config/CannyEdge.cfg
   config/GammaCorrection.cfg
   config/Gaussian.cfg
+  config/Chain.cfg
 )
 
 add_service_files(DIRECTORY srv FILES FilterType.srv)
@@ -60,7 +61,16 @@ target_link_libraries(${PROJECT_NAME}_nodelet
   ${PROJECT_NAME}
 )
 
-install(TARGETS ${PROJECT_NAME}
+add_library(${PROJECT_NAME}_chain
+  src/${PROJECT_NAME}/chain.cpp)
+target_link_libraries(${PROJECT_NAME}_chain
+  ${catkin_LIBRARIES}
+)
+
+install(TARGETS
+    ${PROJECT_NAME}
+    ${PROJECT_NAME}_nodelet
+    ${PROJECT_NAME}_chain
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
