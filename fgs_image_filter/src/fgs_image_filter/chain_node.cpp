@@ -9,14 +9,6 @@ int main(int argc, char* argv[]) {
   ros::NodeHandle private_nh("~");
   Chain::Ptr chain;
 
-  for (int i = 0; i < argc; ++i) {
-    std::cout << argv[i] << std::endl;
-  }
-  nodelet::M_string remappings = ros::names::getRemappings();
-  for (auto it = remappings.begin(); it != remappings.end(); ++it) {
-    std::cout << it->first << " : " << it->second << std::endl;
-  }
-
   try {
     chain.reset(new Chain(private_nh));
     ros::spin();
