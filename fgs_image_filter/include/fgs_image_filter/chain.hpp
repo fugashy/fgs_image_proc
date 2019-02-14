@@ -2,24 +2,24 @@
 #define FGS_IMAGE_FILTER_CHAIN_HPP_
 #include <memory>
 
-#include <dynamic_reconfigure/server.h>
-#include <fgs_image_filter/ChainConfig.h>
+#include <fgs_image_filter/ChangeChainNum.h>
 #include <nodelet/loader.h>
-
-using fgs_image_filter::ChainConfig;
+#include <ros/ros.h>
 
 namespace fgs {
 namespace image_filter {
 
 class Chain {
- private:
+ public:
+  typedef std::shared_ptr<Chain> Ptr;
   explicit Chain(ros::NodeHandle& nh);
 
  private:
-  void ReconfigureCallback(ChainConfig& config, uint32_t level);
+  bool ChangeChainNum(fgs_image_filter::ChangeChainNum::Request& req,
+                      fgs_image_filter::ChangeChainNum::Response& res);
 
   std::shared_ptr<nodelet::Loader> manager_;
-  std::shared_ptr<dynamic_reconfigure::Server<ChainConfig>> server_;
+  ros::ServiceServer server_;
 };
 
 }

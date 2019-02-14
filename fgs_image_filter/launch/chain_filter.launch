@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="input_topic" default="image_raw"/>
+  <node name="chain_filter_node" pkg="fgs_image_filter" type="fgs_image_filter_chain_node">
+     <remap from="camera/image_raw" to="$(arg input_topic)" />
+  </node>
+</launch>

@@ -17,10 +17,14 @@ generate_dynamic_reconfigure_options(
   config/CannyEdge.cfg
   config/GammaCorrection.cfg
   config/Gaussian.cfg
-  config/Chain.cfg
 )
 
-add_service_files(DIRECTORY srv FILES FilterType.srv)
+add_service_files(
+  DIRECTORY
+    srv
+  FILES
+    ChangeChainNum.srv
+    FilterType.srv)
 generate_messages(DEPENDENCIES std_msgs)
 
 catkin_package(
@@ -65,6 +69,12 @@ add_library(${PROJECT_NAME}_chain
   src/${PROJECT_NAME}/chain.cpp)
 target_link_libraries(${PROJECT_NAME}_chain
   ${catkin_LIBRARIES}
+)
+
+add_executable(${PROJECT_NAME}_chain_node
+  src/${PROJECT_NAME}/chain_node.cpp)
+target_link_libraries(${PROJECT_NAME}_chain_node
+  ${PROJECT_NAME}_chain
 )
 
 install(TARGETS

@@ -7,27 +7,34 @@ namespace fgs {
 namespace image_filter {
 
 Chain::Chain(ros::NodeHandle& nh) {
-  server_.reset(new dynamic_reconfigure::Server<ChainConfig>(
-        ros::NodeHandle(nh, "chain")));
-  dynamic_reconfigure::Server<ChainConfig>::CallbackType f = boost::bind(
-      &Chain::ReconfigureCallback, this, _1, _2);
-  server_->setCallback(f);
+  server_ = nh.advertiseService(
+      "change_chain_num", &Chain::ChangeChainNum, this);
+  manager_.reset(new nodelet::Loader());
+
+  nodelet::M_string remap;
+  nodelet::V_string argv;
+  std::ostringstream sout;
+  sout << "filter_" << std::setfill('0') << 0;
+  manager_->load(sout.str(), "fgs_image_filter/Nodelet", remap, argv);
 }
 
-void Chain::ReconfigureCallback(ChainConfig& config, uint32_t level) {
-  if (config.num <= 0) {
+bool Chain::ChangeChainNum(fgs_image_filter::ChangeChainNum::Request& req,
+                           fgs_image_filter::ChangeChainNum::Response& res) {
+  if (req.num <= 0) {
     ROS_WARN("Number of chain should be larger than 0.");
-    return;
+    return false;
   }
   manager_.reset();
 
-  for (int i = 0, iend = config.num; i < iend; ++i) {
+  for (int i = 0, iend = req.num; i < iend; ++i) {
     nodelet::M_string remap;
     nodelet::V_string argv;
     std::ostringstream sout;
     sout << "filter_" << std::setfill('0') << i;
     manager_->load(sout.str(), "fgs_image_filter/Nodelet", remap, argv);
   }
+
+  return true;
 }
 
 }
