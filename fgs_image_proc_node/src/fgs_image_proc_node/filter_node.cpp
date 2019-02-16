@@ -1,10 +1,11 @@
+#include <image_proc_chain/dynamic_changable_filter.hpp>
+
 #include "fgs_image_proc_node/subscriber.hpp"
 #include "fgs_image_proc_utils/viewer.hpp"
-#include "fgs_image_filter/dynamic_changable_filter.hpp"
 
 using fgs::image_proc_node::Subscriber;
 using fgs::image_proc_utils::Viewer;
-using fgs::image_filter::DynamicChangableFilter;
+using image_proc_chain::DynamicChangableFilter;
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "filter_node");

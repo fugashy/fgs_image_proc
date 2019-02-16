@@ -5,13 +5,16 @@ add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  fgs_image_filter
+  image_proc_chain
   fgs_image_proc_utils
 )
 
 catkin_package(
   INCLUDE_DIRS include
-  CATKIN_DEPENDS roscpp fgs_image_filter fgs_image_proc_utils
+  CATKIN_DEPENDS
+    roscpp
+    image_proc_chain
+    fgs_image_proc_utils
 )
 
 include_directories(
