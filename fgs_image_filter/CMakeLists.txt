@@ -50,6 +50,7 @@ add_library(${PROJECT_NAME}
   src/${PROJECT_NAME}/factory.cpp
   src/${PROJECT_NAME}/gamma_correction.cpp
   src/${PROJECT_NAME}/gaussian.cpp
+  src/${PROJECT_NAME}/pass_through.cpp
   src/${PROJECT_NAME}/dynamic_changable_filter.cpp
 )
 target_link_libraries(${PROJECT_NAME}

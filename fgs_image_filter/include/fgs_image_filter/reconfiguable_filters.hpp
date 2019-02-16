@@ -71,5 +71,11 @@ class Gaussian : public Interface {
   std::mutex mutex_;
 };
 
+class PassThrough : public Interface {
+ public:
+  explicit PassThrough(ros::NodeHandle& nh);
+  virtual void Through(const cv::Mat& in, cv::Mat& out);
+};
+
 }
 }

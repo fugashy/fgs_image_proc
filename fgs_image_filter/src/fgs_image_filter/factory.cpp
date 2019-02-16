@@ -10,7 +10,7 @@ namespace image_filter {
 
 Interface::Ptr Factory::Create(ros::NodeHandle& nh) {
   std::string type;
-  nh.param<std::string>("type", type, "gaussian");
+  nh.param<std::string>("type", type, "pass_through");
 
   Interface::Ptr ptr;
   if (type == "gaussian") {
@@ -21,6 +21,8 @@ Interface::Ptr Factory::Create(ros::NodeHandle& nh) {
     ptr.reset(new CannyEdge(nh));
   } else if (type == "gamma_correction") {
     ptr.reset(new GammaCorrection(nh));
+  } else if (type == "pass_through") {
+    ptr.reset(new PassThrough(nh));
   } else {
     throw std::runtime_error("Invalid filter type.");
   }
