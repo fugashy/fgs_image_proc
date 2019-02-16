@@ -36,7 +36,10 @@ Chain::Chain(ros::NodeHandle& nh) {
     sout << "filter_" << std::setfill('0') << std::setw(3) << i;
 
     nodelet::V_string argv;
-    manager_->load(sout.str(), "fgs_image_filter/Nodelet", remap, argv);
+    if (!manager_->load(sout.str(), "fgs_image_filter/Nodelet", remap, argv)) {
+      const std::string error_msg = std::string("Failed to load ") + sout.str();
+      throw std::runtime_error(error_msg);
+    }
   }
 
   const auto nodelet_list = manager_->listLoadedNodelets();
@@ -74,7 +77,10 @@ bool Chain::ChangeChainNum(fgs_image_filter::ChangeChainNum::Request& req,
       nodelet::V_string argv;
       std::ostringstream sout;
       sout << "filter_" << std::setfill('0') << std::setw(3) << i;
-      manager_->load(sout.str(), "fgs_image_filter/Nodelet", remap, argv);
+      if (!manager_->load(sout.str(), "fgs_image_filter/Nodelet", remap, argv)) {
+        ROS_WARN("Failed to load %s", sout.str().c_str());
+        return false;
+      }
     }
   } else {
     // Unload unnecessary nodelets
