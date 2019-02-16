@@ -1,30 +1,25 @@
 # fgs_image_filter
 
-Provide reconfiguable filter library.
-Reconfigulation function is powered by ROS dynamic reconfigure class
+- Provide reconfiguable filter library.
 
-<http://wiki.ros.org/dynamic_reconfigure>
+  Reconfigulation function is powered by ROS dynamic reconfigure class
+
+  <http://wiki.ros.org/dynamic_reconfigure>
+
+- Provide chain filter node for validation of filter function.
+
 
 # Filters
 
 | name | link |
 | ---- | ---- |
+| canny_edge | <https://en.wikipedia.org/wiki/Canny_edge_detector> |
 | gaussian | <https://en.wikipedia.org/wiki/Gaussian_filter> |
 | bilateral | <https://en.wikipedia.org/wiki/Bilateral_filter> |
+| pass_through | Do nothing |
 
-# How to use
+# How to use chain filter
 
-  Put following code in your node.
-
-  ```cpp
-  #include "fgs_image_filter/factory.hpp"
-  .
-  .
-  .
-  // ex) rosparam set /your_node/filter/type gaussian
-  FilterPtr filter = fgs::image_filter::Factory::Create(private_nh);
-  .
-  .
-  .
-  filter->Through(original_image, filtered_image);
+  ```bash
+  roslaunch fgs_image_filter chain_filter.launch --screen input_topic:=/cv_camera/image_raw default_chain_num:=3
   ```
