@@ -31,21 +31,26 @@ Chain::Chain(ros::NodeHandle& nh) {
   }
 
   for (int i = 0; i < chain_num; ++i) {
+    // Generate remappings
+    const std::string target_to_remap =
+        ros::this_node::getName() + std::string("/") + kTopicOfInput;
     nodelet::M_string remap;
     if (i == 0) {
-      remap[kTopicOfInput] = input_topic;
+      remap[target_to_remap] = input_topic;
     } else {
       const std::string last_nodelet_name = manager_->listLoadedNodelets().back();
-      remap[kTopicOfInput] = last_nodelet_name + kTopicOfFiltered;
+      remap[target_to_remap] = last_nodelet_name + kTopicOfFiltered;
     }
 
     // Generate nodelet name
     std::ostringstream sout;
     sout << "filter_" << std::setfill('0') << std::setw(3) << i;
+    const std::string nodelet_name =
+        ros::this_node::getName() + std::string("/") + sout.str();
 
-    nodelet::V_string argv;
-    if (!manager_->load(sout.str(), kNameOfNodelet, remap, argv)) {
-      const std::string error_msg = std::string("Failed to load ") + sout.str();
+    // Load nodelet
+    if (!manager_->load(nodelet_name, kNameOfNodelet, remap, nodelet::V_string())) {
+      const std::string error_msg = std::string("Failed to load ") + nodelet_name;
       throw std::runtime_error(error_msg);
     }
   }
@@ -55,9 +60,11 @@ Chain::Chain(ros::NodeHandle& nh) {
 
 bool Chain::ChangeChainNum(fgs_image_filter::ChangeChainNum::Request& req,
                            fgs_image_filter::ChangeChainNum::Response& res) {
+  // When loading, it may die suddenly.
   ROS_WARN("This service is unstable...");
   if (req.num < kMinChainNum || kMaxChainNum < req.num) {
-    throw std::runtime_error("Number of chain should be in range of 1 to 8");
+    ROS_WARN("Number of chain should be in range of 1 to 8");
+    return false;
   }
   const int current_chain_num = manager_->listLoadedNodelets().size();
   const int diff = req.num - current_chain_num;
@@ -69,22 +76,32 @@ bool Chain::ChangeChainNum(fgs_image_filter::ChangeChainNum::Request& req,
   if (diff > 0) {
     // Load nodelets
     for (int i = current_chain_num, iend = req.num; i < iend; ++i) {
+      // Generate remappings
       nodelet::M_string remap;
       const std::string last_nodelet_name = manager_->listLoadedNodelets().back();
-      remap[kTopicOfInput] = last_nodelet_name + kTopicOfFiltered;
-      nodelet::V_string argv;
+      const std::string target_to_remap =
+          ros::this_node::getName() + std::string("/") + kTopicOfInput;
+      remap[target_to_remap] = last_nodelet_name + kTopicOfFiltered;
+
+      // Generate nodelet name
       std::ostringstream sout;
       sout << "filter_" << std::setfill('0') << std::setw(3) << i;
-      if (!manager_->load(sout.str(), kNameOfNodelet, remap, argv)) {
-        ROS_WARN("Failed to load %s", sout.str().c_str());
+      const std::string nodelet_name =
+          ros::this_node::getName() + std::string("/") + sout.str();
+
+      // Load nodelet
+      if (!manager_->load(nodelet_name, kNameOfNodelet, remap, nodelet::V_string())) {
+        ROS_WARN("Failed to load %s", nodelet_name.c_str());
         return false;
       }
+      ROS_INFO("Succeed to load %s", nodelet_name.c_str());
     }
   } else {
     // Unload unnecessary nodelets
     const auto nodelet_list = manager_->listLoadedNodelets();
     for (int i = req.num, iend = current_chain_num; i < iend; ++i) {
       manager_->unload(nodelet_list[i]);
+      ROS_INFO("Succeed to unload %s", nodelet_list[i].c_str());
     }
   }
 
