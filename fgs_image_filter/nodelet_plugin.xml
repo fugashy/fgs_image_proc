@@ -1,8 +1,0 @@
-<library path="lib/libfgs_image_filter_nodelet">
-  <class name="fgs_image_filter/Nodelet" type="fgs::image_filter::Nodelet"
-    base_class_type="nodelet::Nodelet">
-    <description>
-      Image filter nodelet.
-    </description>
-  </class>
-</library>
